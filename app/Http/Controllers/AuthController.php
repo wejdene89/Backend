@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use  App\User;
 use  App\Http\Requests\UserRequest;
 class AuthController extends Controller
-{
+{   
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login','CreateUser']]);
@@ -40,7 +40,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function me()
+    public function user()
     {
         return response()->json(auth()->user());
     }
@@ -79,7 +79,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'role' =>  auth()->user()->role
         ]);
     }
 }
