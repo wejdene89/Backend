@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use  App\User;
 use  App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 class AuthController extends Controller
 {   
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','CreateUser']]);
+        $this->middleware('auth:api', ['except' => ['login','CreateUser','send']]);
     }
      /**
      * Get a JWT via given credentials.
@@ -44,7 +46,10 @@ class AuthController extends Controller
     {
         return response()->json(auth()->user());
     }
-
+    public function send()
+    {
+        return Mail::to("wejdenelabidi89@yahoo.com")->send(new SendMail());
+    }
     /**
      * Log the user out (Invalidate the token).
      *
@@ -80,7 +85,9 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'role' =>  auth()->user()->role
+            'role' =>  auth()->user()->role,
+            'nom' => auth()->user()->nom,
+            'prenom' => auth()->user()->prenom,
         ]);
     }
 }

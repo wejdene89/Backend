@@ -25,5 +25,9 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::get('user', 'AuthController@user');
     Route::post('create', 'AuthController@CreateUser');
+    Route::get('send', 'AuthController@send');
+    Route::post('sendPasswordReset', 'ResetPasswordController@sendEmail');
+    Route::post('responsepasswordreset', 'ChangePasswordController@process');
 
+   
 });
