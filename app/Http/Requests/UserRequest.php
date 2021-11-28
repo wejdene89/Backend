@@ -27,7 +27,8 @@ class UserRequest extends FormRequest
             'nom' => 'required',
             'prenom' => 'required', 
             'email' => 'required|unique:users',
-            'numtel' => 'required|between:8,12',
+            'numtel' => 'required',
+            'pays' => 'required',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required'
         ];
