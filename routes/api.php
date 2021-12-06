@@ -33,20 +33,23 @@ Route::group([
     Route::delete('eventdelete/{id}', 'EventsController@DeleteEvent');
     Route::get('eventfind/{id}', 'EventsController@FindEvent');
     Route::get('eventall', 'EventsController@AllEvent');
+    Route::post('eventupdate/{id}', 'EventsController@UpdateEvent');
+    Route::get('eventfirst', 'EventsController@FirstEvent');
 
     //new 
     Route::post('new', 'NewsController@CreateNew');
     Route::delete('newdelete/{id}', 'NewsController@DeleteNew');
     Route::get('newfind/{id}', 'NewsController@FindNew');
     Route::get('newall', 'NewsController@AllNew');
-    Route::put('newupdate/{id}', 'NewsController@UpdateNew');
+    Route::post('newupdate/{id}', 'NewsController@UpdateNew');
+    Route::get('newfirst', 'NewsController@FirstNew');
 
-
-
-
-
-
-
-
+    //presentation
+    Route::post('presentation', 'PresentationController@CreatePresentation');
+    Route::delete('presentationdelete/{id}', 'PresentationController@DeletePresentation');
+    Route::get('presentationfind/{id}', 'PresentationController@FindPresentation');
+    Route::get('presentationall', 'PresentationController@AllPresentation');
+    Route::post('presentationupdate/{id}', 'PresentationController@UpdatePresentation');
+    Route::get('presentationfirst', 'PresentationController@FirstPresentation');
    
 });

@@ -17,6 +17,11 @@ class EventsController extends Controller
         $this->storeImage($event);
         return $event;
     }
+    public  function FirstEvent()
+    {
+        $event = Events::latest()->first();
+        return $event;
+    }
     public  function  storeImage($event)
 
     {
@@ -25,7 +30,7 @@ class EventsController extends Controller
               $event->update([
                     'imageevent' => request()->imageevent->store('uploads','public'),   
               ]);
-              $image =  Image::make(public_path('storage/' . $event->imageevent))->fit(300,300,null, 'top-left');
+              $image =  Image::make(public_path('storage/' . $event->imageevent));
               $image->save();
           }
     }
@@ -55,6 +60,35 @@ class EventsController extends Controller
     {   
         return $event = Events::all();
       
+    }
+    public  function UpdateEvent(Request $request , $id)
+    {   $event = Events::findOrFail($id);
+
+         $request->validate([
+           
+            'titreevent' => 'required',
+            'descriptionevent' => 'required', 
+            'imageevent' => 'required',
+        ]);
+        $event->titreevent=  $request->titreevent;
+        $event->descriptionevent =  $request->descriptionevent;
+        if($request->hasFile('imageevent'))
+        {
+            $imagePath = '/public/'.$event->imageevent; 
+            Storage::delete($imagePath);
+            $event->imageevent =  $request->imageevent;
+            $this->storeImage($event);
+            $event->save();
+            return  $event;
+        }
+        else
+        {
+            $event->imageevent =  $event->imageevent;
+            $event->save();
+            return  $event;
+        }
+ 
+
     }
       
 }

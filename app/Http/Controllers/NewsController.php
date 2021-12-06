@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use  App\News;
 use  App\Http\Requests\NewRequest;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -24,7 +25,7 @@ class NewsController extends Controller
               $news->update([
                     'imagenews' => request()->imagenews->store('news','public'),   
               ]);
-              $image =  Image::make(public_path('storage/' . $news->imagenews))->fit(500,500,null, 'top-left');
+              $image =  Image::make(public_path('storage/' . $news->imagenews))->fit(600,355,null, 'top-left');
               $image->save();
           }
     } 
@@ -52,24 +53,42 @@ class NewsController extends Controller
     }
     public  function  AllNew()
     {   
-        return $event = Events::all();
+        return $new = News::all();
       
     }
     public  function UpdateNew(Request $request , $id)
     {   $new = News::findOrFail($id);
-        /* $request->validate([
+         $request->validate([
            
             'titrenews' => 'required',
             'descriptionnews' => 'required', 
-            'imagenews' => 'required|image',
-        ]);*/
+            'imagenews' => 'required',
+        ]);
+       
         $new->titrenews =  $request->titrenews;
         $new->descriptionnews =  $request->descriptionnews;
-        $new->imagenews =  $request->imagenews;
-        $this->storeImage($new);
-        $new->save();
-        return  $new;
+        if($request->hasFile('imagenews'))
+        {
+            $imagePath = '/public/'. $new->imagenews; 
+           Storage::delete($imagePath);
+            $new->imagenews =  $request->imagenews;
+            $this->storeImage($new);
+            $new->save();
+            return  $new;
+        }
+        else
+        {
+            $new->imagenews =  $new->imagenews;
+            $new->save();
+            return   $new;
+        }
+      
  
 
+    }
+    public  function FirstNew()
+    {
+        $new = News::latest()->first();
+        return $new;
     }
 }
