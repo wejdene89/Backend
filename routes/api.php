@@ -51,5 +51,7 @@ Route::group([
     Route::get('presentationall', 'PresentationController@AllPresentation');
     Route::post('presentationupdate/{id}', 'PresentationController@UpdatePresentation');
     Route::get('presentationfirst', 'PresentationController@FirstPresentation');
-   
+    Route::get('download/{id}', 'PresentationController@Download');
+
+  
 });

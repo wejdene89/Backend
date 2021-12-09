@@ -97,4 +97,12 @@ class PresentationController extends Controller
                    return 0;
                }
        }
+       public  function  Download($id)
+       {
+            $presentation = Presentation::findOrFail($id);
+            //$file = Storage::download($presentation->pres);
+           // return response()->json($file);
+               return Storage::url($presentation->pres);
+         
+       }
 }
