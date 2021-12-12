@@ -18,7 +18,7 @@ class PresentationController extends Controller
           {
               $file = request()->file('pres');
               $originalName = $file->getClientOriginalName();
-              $fileLoc =  request()->pres->storeAs('public/file', $originalName);
+              $fileLoc =  request()->pres->storeAs('/public/file', $originalName);
               $mimeType = Storage::mimeType($fileLoc);
               $presentation->update([
                 'pres' => $fileLoc,
@@ -82,20 +82,11 @@ class PresentationController extends Controller
        }
        public  function  DeletePresentation($id)
        {   
+   
            $presentation = Presentation::findOrFail($id);
            $filePath = '/'. $presentation->pres; 
-   
-           if(Storage::exists($filePath))
-              {
-                   Storage::delete($filePath);
-                   $presentation->delete();
-                   
-                   return 1;
-               } 
-           else
-               {
-                   return 0;
-               }
+          Storage::delete($filePath);
+           return $presentation->delete();
        }
        public  function  Download($id)
        {

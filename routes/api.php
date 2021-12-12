@@ -28,6 +28,11 @@ Route::group([
     Route::get('send', 'AuthController@send');
     Route::post('sendPasswordReset', 'ResetPasswordController@sendEmail');
     Route::post('responsepasswordreset', 'ChangePasswordController@process');
+    Route::get('users', 'AuthController@AllUsers');
+    Route::delete('userdelete/{id}', 'AuthController@DeleteUser');
+    Route::post('userupdate/{id}', 'AuthController@UpdateUser');
+    Route::get('findemail/{email}', 'AuthController@findemail');
+
     //event
     Route::post('event', 'EventsController@CreateEvent');
     Route::delete('eventdelete/{id}', 'EventsController@DeleteEvent');
@@ -35,7 +40,7 @@ Route::group([
     Route::get('eventall', 'EventsController@AllEvent');
     Route::post('eventupdate/{id}', 'EventsController@UpdateEvent');
     Route::get('eventfirst', 'EventsController@FirstEvent');
-
+  
     //new 
     Route::post('new', 'NewsController@CreateNew');
     Route::delete('newdelete/{id}', 'NewsController@DeleteNew');

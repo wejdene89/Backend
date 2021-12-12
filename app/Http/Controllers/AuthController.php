@@ -8,12 +8,12 @@ use App\Http\Controllers\Controller;
 use  App\User;
 use  App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\SendMail;
+use App\Mail\AcceptMail;
 class AuthController extends Controller
 {   
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','CreateUser','send']]);
+        $this->middleware('auth:api', ['except' => ['login','CreateUser','send','AllUsers','DeleteUser','UpdateUser','findemail']]);
     }
      /**
      * Get a JWT via given credentials.
@@ -34,7 +34,7 @@ class AuthController extends Controller
     public function CreateUser(UserRequest $request)
     {
        $user = User::create($request->all());
-       return $this->login($user);
+       return  $user;
     }
     
     /**
@@ -89,6 +89,28 @@ class AuthController extends Controller
             'nom' => auth()->user()->nom,
             'prenom' => auth()->user()->prenom,
         ]);
+    }
+    public  function  AllUsers()
+    {   
+        return $users = User::all();
+      
+    }
+    public  function  DeleteUser($id)
+    {   
+        $user = User::findOrFail($id);
+        return $user->delete();
+    }
+    public  function UpdateUser(Request $request , $id)
+    {  
+        $user = User::findOrFail($id);
+        $user->accepte =  $request->accepte;
+        $user->save();
+        return   Mail::to($user->email)->send(new AcceptMail());  
+      }
+      public  function findemail($email)
+    {  
+        $user =  User::where('email',$email)->first();
+        return $user;    
     }
 }
 
